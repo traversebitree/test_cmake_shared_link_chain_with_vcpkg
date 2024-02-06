@@ -20,7 +20,7 @@ if(MSVC)
 endif()
 
 if(UNIX)
-  set(CMAKE_BUILD_RPATH_USE_ORIGIN TRUE)
+  set(CMAKE_INSTALL_RPATH "$ORIGIN")
 endif()
 
 if(CMAKE_BUILD_TYPE MATCHES "RelWithDebInfo")
