@@ -19,10 +19,10 @@ if(MSVC)
   add_compile_options(/Zc:__cplusplus /EHsc)
 endif()
 
-if(UNIX)
-  set(CMAKE_INSTALL_RPATH "$ORIGIN")
-elseif(APPLE)
+if(APPLE) # APPLE put first
   set(CMAKE_INSTALL_RPATH "@loader_path")
+elseif(UNIX)
+  set(CMAKE_INSTALL_RPATH "$ORIGIN")
 endif()
 
 if(CMAKE_BUILD_TYPE MATCHES "RelWithDebInfo")
