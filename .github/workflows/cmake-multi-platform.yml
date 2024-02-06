@@ -49,8 +49,6 @@ jobs:
           - { os: windows-latest, build_type: REL }
           - { os: macos-latest, build_type: DEV }
           - { os: macos-latest, build_type: REL }
-          - { os: macos-14, build_type: DEV }
-          - { os: macos-14, build_type: REL }
 
     steps:
       - uses: actions/checkout@v4
@@ -79,18 +77,18 @@ jobs:
         working-directory: ${{ github.workspace }}/.out/install/DEFAULT-${{ matrix.build_type }}/bin
         if: (success() || failure()) && (matrix.os == 'ubuntu-latest')
         run: |
-          echo ""
+          echo "libmydylib:"
           ldd ./libmydylib.so
-          echo ""
+          echo "main:"
           ldd ./main
 
       - name: Check rpath when with macOS
         working-directory: ${{ github.workspace }}/.out/install/DEFAULT-${{ matrix.build_type }}/bin
         if: (success() || failure()) && (matrix.os == 'macOS-latest')
         run: |
-          echo ""
+          echo "libmydylib:"
           otool -L ./libmydylib.dylib
-          echo ""
+          echo "main:"
           otool -L ./main
 
       - name: Execute Test

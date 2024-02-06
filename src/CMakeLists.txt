@@ -9,5 +9,3 @@ if(WIN32)
     COMMAND_EXPAND_LISTS
   )
 endif()
-
-# set_target_properties(main PROPERTIES INSTALL_RPATH "$ORIGIN")

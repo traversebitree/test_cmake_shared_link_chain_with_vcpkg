@@ -6,7 +6,5 @@ target_include_directories(
 )
 
 target_link_libraries(mydylib PRIVATE fmt::fmt)
-set_target_properties(mydylib PROPERTIES POSITION_INDEPENDENT_CODE TRUE)
-# set_target_properties(mydylib PROPERTIES INSTALL_RPATH "$ORIGIN")
 include(GenerateExportHeader)
 generate_export_header(mydylib)
