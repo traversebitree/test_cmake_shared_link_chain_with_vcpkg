@@ -89,7 +89,7 @@ jobs:
         if: (success() || failure()) && (matrix.os == 'macOS-latest')
         run: |
           echo ""
-          otool -L ./libmydylib.so
+          otool -L ./libmydylib.dylib
           echo ""
           otool -L ./main
 
