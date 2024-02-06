@@ -19,9 +19,7 @@ if(MSVC)
   add_compile_options(/Zc:__cplusplus /EHsc)
 endif()
 
-if(UNIX)
-  set(CMAKE_INSTALL_RPATH "$ORIGIN")
-endif()
+set(CMAKE_INSTALL_RPATH "$ORIGIN")
 
 if(CMAKE_BUILD_TYPE MATCHES "RelWithDebInfo")
   add_compile_options("-fsanitize=address")
