@@ -1,0 +1,439 @@
+{
+    "version": 6,
+    "cmakeMinimumRequired": {
+        "major": 3,
+        "minor": 25
+    },
+    "configurePresets": [
+        {
+            "name": "base",
+            "hidden": true,
+            "displayName": "Custom configure preset",
+            "description": "Base setting",
+            "binaryDir": "${sourceDir}/.out/build/${presetName}",
+            "installDir": "${sourceDir}/.out/install/${presetName}",
+            "cacheVariables": {
+                "CPACK_PACKAGE_DIRECTORY": "${sourceDir}/.out/pack/${presetName}",
+                "CMAKE_EXPORT_COMPILE_COMMANDS": true
+            }
+        },
+        {
+            "name": "ninja-generator",
+            "hidden": true,
+            "description": "Sets Ninja generator",
+            "generator": "Ninja",
+            "cacheVariables": {
+                "CMAKE_MAKE_PROGRAM": "ninja"
+            }
+        },
+        {
+            "name": "mingw-generator",
+            "hidden": true,
+            "description": "Sets MinGW Makefiles generator",
+            "generator": "MinGW Makefiles",
+            "cacheVariables": {
+                "CMAKE_MAKE_PROGRAM": "make"
+            },
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Windows"
+            }
+        },
+        {
+            "name": "debug",
+            "description": "Debug build",
+            "hidden": true,
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug"
+            }
+        },
+        {
+            "name": "release",
+            "description": "Release build",
+            "hidden": true,
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release"
+            }
+        },
+        {
+            "name": "sanitize",
+            "description": "Release with debug info",
+            "hidden": true,
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "RelWithDebInfo"
+            }
+        },
+        {
+            "name": "compiler-clang",
+            "hidden": true,
+            "description": "Use clang as the C/C++ compiler",
+            "cacheVariables": {
+                "CMAKE_C_COMPILER": "clang",
+                "CMAKE_CXX_COMPILER": "clang++"
+            }
+        },
+        {
+            "name": "compiler-gcc",
+            "hidden": true,
+            "description": "Use GCC as the C/C++ compiler",
+            "cacheVariables": {
+                "CMAKE_C_COMPILER": "gcc",
+                "CMAKE_CXX_COMPILER": "g++"
+            }
+        },
+        {
+            "name": "compiler-msvc",
+            "hidden": true,
+            "description": "Use MSVC as the C/C++ compiler",
+            "cacheVariables": {
+                "CMAKE_C_COMPILER": "cl",
+                "CMAKE_CXX_COMPILER": "cl"
+            },
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Windows"
+            }
+        },
+        {
+            "name": "x64",
+            "description": "64bit build (on windows)",
+            "hidden": true,
+            "architecture": {
+                "value": "x64",
+                "strategy": "external"
+            },
+            "toolset": {
+                "strategy": "external",
+                "value": "host=x64"
+            }
+        },
+        {
+            "name": "x86",
+            "description": "32bit build (on windows)",
+            "hidden": true,
+            "architecture": {
+                "value": "x86",
+                "strategy": "external"
+            },
+            "toolset": {
+                "strategy": "external",
+                "value": "host=x86"
+            }
+        },
+        {
+            "name": "DEFAULT-DEV",
+            "description": "DEFAULT debug build using default generator",
+            "inherits": [
+                "base",
+                "debug",
+                "x64"
+            ]
+        },
+        {
+            "name": "DEFAULT-REL",
+            "description": "DEFAULT release build using default generator",
+            "inherits": [
+                "base",
+                "release",
+                "x64"
+            ]
+        },
+        {
+            "name": "DEFAULT-DEV-X86",
+            "description": "DEFAULT debug build using default generator",
+            "inherits": [
+                "base",
+                "debug",
+                "x86"
+            ]
+        },
+        {
+            "name": "DEFAULT-REL-X86",
+            "description": "DEFAULT release build using default generator",
+            "inherits": [
+                "base",
+                "release",
+                "x86"
+            ]
+        },
+        {
+            "name": "MSVC-DEV",
+            "description": "MSVC debug build using Ninja-build generator",
+            "inherits": [
+                "base",
+                "ninja-generator",
+                "debug",
+                "compiler-msvc",
+                "x64"
+            ]
+        },
+        {
+            "name": "MSVC-REL",
+            "description": "MSVC debug build using Ninja-build generator",
+            "inherits": [
+                "base",
+                "ninja-generator",
+                "release",
+                "compiler-msvc",
+                "x64"
+            ]
+        },
+        {
+            "name": "MSVC-SANITIZE",
+            "description": "MSVC release with debug info using Ninja-build generator",
+            "inherits": [
+                "base",
+                "ninja-generator",
+                "sanitize",
+                "compiler-msvc",
+                "x64"
+            ]
+        },
+        {
+            "name": "GCC-DEV",
+            "description": "GCC debug build",
+            "inherits": [
+                "base",
+                "debug",
+                "compiler-gcc"
+            ],
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Linux"
+            }
+        },
+        {
+            "name": "GCC-REL",
+            "description": "GCC release build",
+            "inherits": [
+                "base",
+                "release",
+                "compiler-gcc"
+            ],
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Linux"
+            }
+        },
+        {
+            "name": "MinGW-DEV",
+            "description": "MinGW debug build using MinGW Makefiles",
+            "inherits": [
+                "base",
+                "mingw-generator",
+                "debug",
+                "compiler-gcc"
+            ]
+        },
+        {
+            "name": "MinGW-REL",
+            "description": "MinGW release build using MinGW Makefiles",
+            "inherits": [
+                "base",
+                "mingw-generator",
+                "release",
+                "compiler-gcc"
+            ]
+        },
+        {
+            "name": "CLANG-DEV",
+            "description": "Clang debug build using Ninja-build generator",
+            "inherits": [
+                "base",
+                "ninja-generator",
+                "debug",
+                "compiler-clang"
+            ]
+        },
+        {
+            "name": "CLANG-REL",
+            "description": "Clang release build using Ninja-build generator",
+            "inherits": [
+                "base",
+                "ninja-generator",
+                "release",
+                "compiler-clang"
+            ]
+        }
+    ],
+    "buildPresets": [
+        {
+            "name": "base",
+            "cleanFirst": true,
+            "hidden": true
+        },
+        {
+            "name": "release",
+            "configuration": "Release",
+            "hidden": true,
+            "inherits": [
+                "base"
+            ]
+        },
+        {
+            "name": "debug",
+            "configuration": "Debug",
+            "hidden": true,
+            "inherits": [
+                "base"
+            ]
+        },
+        {
+            "name": "sanitize",
+            "configuration": "RelWithDebInfo",
+            "hidden": true,
+            "inherits": [
+                "base"
+            ]
+        },
+        {
+            "name": "DEFAULT-DEV",
+            "configurePreset": "DEFAULT-DEV",
+            "inherits": [
+                "debug"
+            ]
+        },
+        {
+            "name": "DEFAULT-REL",
+            "configurePreset": "DEFAULT-REL",
+            "inherits": [
+                "release"
+            ]
+        },
+        {
+            "name": "DEFAULT-DEV-X86",
+            "configurePreset": "DEFAULT-DEV-X86",
+            "inherits": [
+                "debug"
+            ]
+        },
+        {
+            "name": "DEFAULT-REL-X86",
+            "configurePreset": "DEFAULT-REL-X86",
+            "inherits": [
+                "release"
+            ]
+        },
+        {
+            "name": "MSVC-DEV",
+            "configurePreset": "MSVC-DEV",
+            "inherits": [
+                "debug"
+            ]
+        },
+        {
+            "name": "MSVC-REL",
+            "configurePreset": "MSVC-REL",
+            "inherits": [
+                "release"
+            ]
+        },
+        {
+            "name": "MSVC-SANITIZE",
+            "configurePreset": "MSVC-SANITIZE",
+            "inherits": [
+                "sanitize"
+            ]
+        },
+        {
+            "name": "GCC-DEV",
+            "configurePreset": "GCC-DEV",
+            "inherits": [
+                "debug"
+            ]
+        },
+        {
+            "name": "GCC-REL",
+            "configurePreset": "GCC-REL",
+            "inherits": [
+                "release"
+            ]
+        },
+        {
+            "name": "MinGW-DEV",
+            "configurePreset": "MinGW-DEV",
+            "inherits": [
+                "debug"
+            ]
+        },
+        {
+            "name": "MinGW-REL",
+            "configurePreset": "MinGW-REL",
+            "inherits": [
+                "release"
+            ]
+        },
+        {
+            "name": "CLANG-DEV",
+            "configurePreset": "CLANG-DEV",
+            "inherits": [
+                "debug"
+            ]
+        },
+        {
+            "name": "CLANG-REL",
+            "configurePreset": "CLANG-REL",
+            "inherits": [
+                "release"
+            ]
+        }
+    ],
+    "testPresets": [
+        {
+            "name": "DEFAULT-DEV",
+            "configurePreset": "DEFAULT-DEV"
+        },
+        {
+            "name": "DEFAULT-REL",
+            "configurePreset": "DEFAULT-REL"
+        },
+        {
+            "name": "DEFAULT-DEV-X86",
+            "configurePreset": "DEFAULT-DEV-X86"
+        },
+        {
+            "name": "DEFAULT-REL-X86",
+            "configurePreset": "DEFAULT-REL-X86"
+        },
+        {
+            "name": "MSVC-DEV",
+            "configurePreset": "MSVC-DEV"
+        },
+        {
+            "name": "MSVC-REL",
+            "configurePreset": "MSVC-REL"
+        },
+        {
+            "name": "MSVC-SANITIZE",
+            "configurePreset": "MSVC-SANITIZE"
+        },
+        {
+            "name": "GCC-DEV",
+            "configurePreset": "GCC-DEV"
+        },
+        {
+            "name": "GCC-REL",
+            "configurePreset": "GCC-REL"
+        },
+        {
+            "name": "MinGW-DEV",
+            "configurePreset": "MinGW-DEV"
+        },
+        {
+            "name": "MinGW-REL",
+            "configurePreset": "MinGW-REL"
+        },
+        {
+            "name": "CLANG-DEV",
+            "configurePreset": "CLANG-DEV"
+        },
+        {
+            "name": "CLANG-REL",
+            "configurePreset": "CLANG-REL"
+        }
+    ]
+}

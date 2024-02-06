@@ -1,0 +1,76 @@
+# This starter workflow is for a CMake project running on multiple platforms. There is a different starter workflow if you just want a single platform.
+# See: https://github.com/actions/starter-workflows/blob/main/ci/cmake-single-platform.yml
+name: CMake on multiple platforms
+
+on:
+  push:
+    branches: ["master"]
+  pull_request:
+    branches: ["master"]
+
+jobs:
+  pre-commit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.head_ref }}
+
+      - name: Format CMake files
+        id: cmake-format
+        uses: PuneetMatharu/cmake-format-lint-action@v1.0.4
+        with:
+          args: --config-files .cmake-format --in-place
+
+      - name: Format C/C++ files
+        uses: DoozyX/clang-format-lint-action@v0.17
+        with:
+          clangFormatVersion: 17
+          inplace: True
+
+      - name: Commit changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_user_name: cmake-clang-format-bot
+          commit_message: "Automated commit of cmake-clang-format changes."
+
+  build:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { os: ubuntu-latest, build_type: DEV }
+          - { os: ubuntu-latest, build_type: REL }
+          - { os: windows-latest, build_type: DEV }
+          - { os: windows-latest, build_type: REL }
+          - { os: macos-latest, build_type: DEV }
+          - { os: macos-latest, build_type: REL }
+          - { os: macos-14, build_type: DEV }
+          - { os: macos-14, build_type: REL }
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure CMake
+        working-directory: ${{ github.workspace }}
+        run: |
+          cmake --preset "DEFAULT-${{ matrix.build_type }}"
+
+      - name: Build
+        working-directory: ${{ github.workspace }}
+        run: |
+          cmake --build --preset "DEFAULT-${{ matrix.build_type }}"
+
+      - name: Install
+        working-directory: ${{ github.workspace }}
+        run: |
+          cmake --build --preset "DEFAULT-${{ matrix.build_type }}" --target "install_project"
+
+      - name: Execute Test
+        working-directory: ${{ github.workspace }}/.out/install/DEFAULT-${{ matrix.build_type }}/bin
+        run: |
+          ./app
