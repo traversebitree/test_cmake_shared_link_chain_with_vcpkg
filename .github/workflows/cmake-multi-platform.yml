@@ -73,4 +73,6 @@ jobs:
       - name: Execute Test
         working-directory: ${{ github.workspace }}/.out/install/DEFAULT-${{ matrix.build_type }}/bin
         run: |
+          ls ./
+          ls ../
           ./main
