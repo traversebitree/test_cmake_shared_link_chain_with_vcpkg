@@ -10,4 +10,4 @@ if(WIN32)
   )
 endif()
 
-set_target_properties(main PROPERTIES INSTALL_RPATH "$ORIGIN")
+# set_target_properties(main PROPERTIES INSTALL_RPATH "$ORIGIN")
