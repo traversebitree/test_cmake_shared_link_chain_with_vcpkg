@@ -70,9 +70,30 @@ jobs:
         run: |
           cmake --build --preset "DEFAULT-${{ matrix.build_type }}" --target "install_project"
 
-      - name: Execute Test
+      - name: Inspect installs
         working-directory: ${{ github.workspace }}/.out/install/DEFAULT-${{ matrix.build_type }}/bin
         run: |
           ls ./
-          ls ../
+
+      - name: Check rpath when with ubuntu
+        working-directory: ${{ github.workspace }}/.out/install/DEFAULT-${{ matrix.build_type }}/bin
+        if: (success() || failure()) && (matrix.os == 'ubuntu-latest')
+        run: |
+          echo ""
+          ldd ./libmydylib.so
+          echo ""
+          ldd ./main
+
+      - name: Check rpath when with macOS
+        working-directory: ${{ github.workspace }}
+        if: (success() || failure()) && (matrix.os == 'macOS-latest')
+        run: |
+          echo ""
+          otool -L ./libmydylib.so
+          echo ""
+          otool -L ./main
+
+      - name: Execute Test
+        working-directory: ${{ github.workspace }}/.out/install/DEFAULT-${{ matrix.build_type }}/bin
+        run: |
           ./main
