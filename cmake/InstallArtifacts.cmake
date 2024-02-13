@@ -31,19 +31,19 @@ macro(install_exe tgt)
   endif()
   if(NOT WIN32)
     install(
-      CODE "
+      CODE [[
         file(GET_RUNTIME_DEPENDENCIES
             RESOLVED_DEPENDENCIES_VAR RESOLVED_DEPS
             UNRESOLVED_DEPENDENCIES_VAR UNRESOLVED_DEPS
-            LIBRARIES $<TARGET_FILE:${tgt}>
-            DIRECTORIES $<TARGET_FILE_DIR:${tgt}>
-            PRE_INCLUDE_REGEXES $<TARGET_FILE_DIR:${tgt}>
-            POST_INCLUDE_REGEXES $<TARGET_FILE_DIR:${tgt}>
+            LIBRARIES $<TARGET_FILE:main>
+            DIRECTORIES $<TARGET_FILE_DIR:main>
+            PRE_INCLUDE_REGEXES $<TARGET_FILE_DIR:main>
+            POST_INCLUDE_REGEXES $<TARGET_FILE_DIR:main>
         )
         foreach(DEP_LIB ${RESOLVED_DEPS})
             file(INSTALL ${DEP_LIB} DESTINATION ${CMAKE_INSTALL_BINDIR})
         endforeach()
-                  "
+                  ]]
       COMPONENT "${tgt}_dll"
     )
   endif()
