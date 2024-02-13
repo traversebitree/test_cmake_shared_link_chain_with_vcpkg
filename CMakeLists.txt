@@ -31,7 +31,6 @@ if(CMAKE_BUILD_TYPE MATCHES "RelWithDebInfo")
 endif()
 
 include(GNUInstallDirs)
-include(cmake/InstallArtifacts.cmake)
 
 find_package(fmt CONFIG REQUIRED GLOBAL)
 find_package(TinyNPY CONFIG REQUIRED GLOBAL)
@@ -39,8 +38,6 @@ find_package(yaml-cpp CONFIG REQUIRED GLOBAL)
 
 add_subdirectory(dylibsrc)
 add_subdirectory(src)
-
-# install_target(EXEs main)
 
 install(TARGETS main RUNTIME COMPONENT "main_exe" DESTINATION ${CMAKE_INSTALL_BINDIR})
 
