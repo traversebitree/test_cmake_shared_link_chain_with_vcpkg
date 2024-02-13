@@ -5,6 +5,6 @@ target_include_directories(
   PUBLIC "$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>"
 )
 
-target_link_libraries(mydylib PRIVATE fmt::fmt TinyNPY)
+target_link_libraries(mydylib PRIVATE fmt::fmt yaml-cpp::yaml-cpp)
 include(GenerateExportHeader)
 generate_export_header(mydylib)

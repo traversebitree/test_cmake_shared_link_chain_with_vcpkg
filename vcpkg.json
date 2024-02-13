@@ -3,7 +3,8 @@
     "version-string": "0.1.0",
     "dependencies": [
         "fmt",
-        "tinynpy"
+        "tinynpy",
+        "yaml-cpp"
     ],
     "builtin-baseline": "7dc284a6ad0b9cb8ccd618c8dc78c360fbd93b83",
     "overrides": [
@@ -14,6 +15,10 @@
         {
             "name": "tinynpy",
             "version": "1.0.0#6"
+        },
+        {
+            "name": "yaml-cpp",
+            "version": "0.8.0#1"
         }
     ]
 }
