@@ -34,6 +34,7 @@ include(GNUInstallDirs)
 set(BUILD_SHARED_LIBS TRUE)
 
 find_package(fmt CONFIG REQUIRED GLOBAL)
+find_package(TinyNPY CONFIG REQUIRED GLOBAL)
 
 add_subdirectory(dylibsrc)
 add_subdirectory(src)
