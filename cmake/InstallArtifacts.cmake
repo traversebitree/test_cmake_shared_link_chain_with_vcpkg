@@ -29,6 +29,7 @@ macro(install_exe tgt)
     set(CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS ${mingw_runtimes})
     install(PROGRAMS ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS} DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT "${tgt}_dll")
   endif()
+
   if(NOT WIN32)
     install(
       CODE "
@@ -40,8 +41,8 @@ macro(install_exe tgt)
             PRE_INCLUDE_REGEXES $<TARGET_FILE_DIR:${tgt}>
             POST_INCLUDE_REGEXES $<TARGET_FILE_DIR:${tgt}>
         )
-        foreach(DEP_LIB ${RESOLVED_DEPS})
-            file(INSTALL ${DEP_LIB} DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
+        foreach(DEP_LIB \${RESOLVED_DEPS})
+            file(INSTALL \${DEP_LIB} DESTINATION \${CMAKE_INSTALL_PREFIX}/bin)
         endforeach()
                   "
       COMPONENT "${tgt}_dll"
