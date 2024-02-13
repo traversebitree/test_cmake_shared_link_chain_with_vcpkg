@@ -1,5 +1,5 @@
 add_executable(main main.cpp)
-target_link_libraries(main PRIVATE mydylib TinyNPY)
+target_link_libraries(main PRIVATE mydylib)
 
 if(WIN32)
   add_custom_command(
