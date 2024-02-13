@@ -40,19 +40,19 @@ find_package(yaml-cpp CONFIG REQUIRED GLOBAL)
 add_subdirectory(dylibsrc)
 add_subdirectory(src)
 
-install_target(EXEs main)
+# install_target(EXEs main)
 
-# install(TARGETS main RUNTIME COMPONENT "main_exe" DESTINATION ${CMAKE_INSTALL_BINDIR})
+install(TARGETS main RUNTIME COMPONENT "main_exe" DESTINATION ${CMAKE_INSTALL_BINDIR})
 
-# install(FILES $<TARGET_RUNTIME_DLLS:main> COMPONENT "main_dll" DESTINATION ${CMAKE_INSTALL_BINDIR})
+install(FILES $<TARGET_RUNTIME_DLLS:main> COMPONENT "main_dll" DESTINATION ${CMAKE_INSTALL_BINDIR})
 
-# if(MINGW AND ${CMAKE_CXX_COMPILER_ID} MATCHES "GNU")
-#   get_filename_component(mingw_path ${CMAKE_CXX_COMPILER} PATH)
-#   file(GLOB mingw_runtimes "${mingw_path}/*.dll")
-#   list(FILTER mingw_runtimes EXCLUDE REGEX "fortran")
-#   set(CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS ${mingw_runtimes})
-#   install(PROGRAMS ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS} DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT "main_dll")
-# endif()
+if(MINGW AND ${CMAKE_CXX_COMPILER_ID} MATCHES "GNU")
+  get_filename_component(mingw_path ${CMAKE_CXX_COMPILER} PATH)
+  file(GLOB mingw_runtimes "${mingw_path}/*.dll")
+  list(FILTER mingw_runtimes EXCLUDE REGEX "fortran")
+  set(CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS ${mingw_runtimes})
+  install(PROGRAMS ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS} DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT "main_dll")
+endif()
 
 # if(NOT WIN32)
 #   install(
@@ -73,9 +73,9 @@ install_target(EXEs main)
 #   )
 # endif()
 
-# add_custom_target(
-#   install_project
-#   COMMAND ${CMAKE_COMMAND} --install ${CMAKE_BINARY_DIR} --component "main_dll" --config "${CMAKE_BUILD_TYPE}"
-#   COMMAND ${CMAKE_COMMAND} --install ${CMAKE_BINARY_DIR} --component "main_exe" --config "${CMAKE_BUILD_TYPE}"
-#   DEPENDS main
-# )
+add_custom_target(
+  install_project
+  COMMAND ${CMAKE_COMMAND} --install ${CMAKE_BINARY_DIR} --component "main_dll" --config "${CMAKE_BUILD_TYPE}"
+  COMMAND ${CMAKE_COMMAND} --install ${CMAKE_BINARY_DIR} --component "main_exe" --config "${CMAKE_BUILD_TYPE}"
+  DEPENDS main
+)
