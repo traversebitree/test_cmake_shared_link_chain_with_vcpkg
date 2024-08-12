@@ -75,7 +75,7 @@ jobs:
 
       - name: Check rpath when with ubuntu
         working-directory: ${{ github.workspace }}/.out/install/DEFAULT-${{ matrix.build_type }}/bin
-        if: (success() || failure()) && (startsWith(matrix.os, "ubuntu"))
+        if: (success() || failure()) && (startsWith(matrix.os, 'ubuntu'))
         run: |
           echo "libmydylib:"
           ldd ./libmydylib.so
@@ -84,7 +84,7 @@ jobs:
 
       - name: Check rpath when with macOS
         working-directory: ${{ github.workspace }}/.out/install/DEFAULT-${{ matrix.build_type }}/bin
-        if: (success() || failure()) && (startsWith(matrix.os, "macOS"))
+        if: (success() || failure()) && (startsWith(matrix.os, 'macOS'))
         run: |
           echo "libmydylib:"
           otool -L ./libmydylib.dylib
